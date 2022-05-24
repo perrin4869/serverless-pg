@@ -1,5 +1,8 @@
-import stream = require('stream');
-import pg = require('pg');
+import stream from 'stream';
+import { Client } from 'pg';
+
+type query = Client["query"];
+type on = Client["on"];
 
 export declare interface TlsOptions {
   rejectUnauthorized?: boolean;
@@ -40,7 +43,7 @@ export declare interface Config {
   baseMs?: number;
   delayMs?: number;
   maxRetries?: number;
-  library ?: pg.Client;
+  library ?: Client;
 }
 
 declare class ServerlessClient {
@@ -48,9 +51,9 @@ declare class ServerlessClient {
   clean(): Promise<number | undefined>
   setConfig(config: Config): void
   connect(): Promise<void>
-  query(...args): Promise<any>
+  query(...any: Parameters<query>): Promise<ReturnType<query>>
   end(): Promise<any>
-  on(...args): void
+  on(...args: Parameters<on>): void
 }
 
 export default ServerlessClient
